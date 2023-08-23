@@ -41,7 +41,9 @@ export class SongController {
                 foundSongs.sort((a, b) => b.songLikeCounts.length - a.songLikeCounts.length);
                 const foundPlaylists = await Playlists.find({
                     playlistName: {$regex: new RegExp(songName, 'i')},
-                }).sort({uploadTime: -1});
+                })
+                    .populate({path: 'songs', model: Songs})
+                    .sort({uploadTime: -1});
                 foundPlaylists.sort((a, b) => b.playlistLikeCounts.length - a.playlistLikeCounts.length);
                 const foundSingers = await Singers.find({
                     name: {$regex: new RegExp(songName, 'i')},
