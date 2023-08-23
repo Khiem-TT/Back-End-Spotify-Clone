@@ -39,9 +39,8 @@ export class SongController {
                     .populate({path: 'singers', model: Singers})
                     .sort({uploadTime: -1});
                 foundSongs.sort((a, b) => b.songLikeCounts.length - a.songLikeCounts.length);
-                const foundPlaylists = await Playlists.find({
-                    playlistName: {$regex: new RegExp(songName, 'i')},
-                })
+                const foundPlaylists = await Playlists
+                    .find({playlistName: {$regex: new RegExp(songName, 'i')}})
                     .populate({path: 'songs', model: Songs})
                     .sort({uploadTime: -1});
                 foundPlaylists.sort((a, b) => b.playlistLikeCounts.length - a.playlistLikeCounts.length);
@@ -64,6 +63,7 @@ export class SongController {
 
                 let playlists = await Playlists.find()
                     .sort({uploadTime: -1})
+                    .populate({path: 'songs', model: Songs})
                     .exec();
                 playlists.sort((a, b) => b.playlistLikeCounts.length - a.playlistLikeCounts.length);
                 let singers = await Singers.find().exec();
